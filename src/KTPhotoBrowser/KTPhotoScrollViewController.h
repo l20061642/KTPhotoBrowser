@@ -29,6 +29,7 @@
   
    BOOL viewDidAppearOnce_;
    BOOL navbarWasTranslucent_;
+   UIBarStyle navbarStyle_;
    
    NSTimer *chromeHideTimer_;
    

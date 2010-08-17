@@ -200,12 +200,16 @@ const CGFloat ktkDefaultToolbarHeight = 44;
    [self setScrollViewContentSizeWithPageCount:pageCount_];
 
    
-   // Auto-scroll to the stating photo.
-   [self autoScrollToIndex:startWithIndex_];
-   
-   [self applyNewIndex:startWithIndex_ photoController:currentPhoto_];
-   [self applyNewIndex:(startWithIndex_ + 1) photoController:nextPhoto_];
-   
+
+    if (startWithIndex_ == 0) {
+       [self applyNewIndex:startWithIndex_ photoController:currentPhoto_];
+       [self applyNewIndex:(startWithIndex_ + 1) photoController:nextPhoto_];
+    }
+   else {
+           // Auto-scroll to the starting photo.
+       [self autoScrollToIndex:startWithIndex_];
+   }
+
    [self setTitleWithCurrentPhotoIndex];
    [self toggleNavButtons];
    
@@ -225,10 +229,12 @@ const CGFloat ktkDefaultToolbarHeight = 44;
   if (!viewDidAppearOnce_) {
     viewDidAppearOnce_ = YES;
     navbarWasTranslucent_ = [navbar isTranslucent];
+    navbarStyle_ = [navbar barStyle];
     statusBarStyle_ = [[UIApplication sharedApplication] statusBarStyle];
   }
   // Then ensure translucency. Without it, the view will appear below rather than under it.  
   [navbar setTranslucent:YES];
+  [navbar setBarStyle:UIBarStyleBlack];
   [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleBlackTranslucent animated:YES];
   
   [super viewWillAppear:animated];
@@ -238,12 +244,14 @@ const CGFloat ktkDefaultToolbarHeight = 44;
   // Reset nav bar translucency and status bar style to whatever it was before.
   UINavigationBar *navbar = [[self navigationController] navigationBar];
   [navbar setTranslucent:navbarWasTranslucent_];
+  [navbar setBarStyle:navbarStyle_];
   [[UIApplication sharedApplication] setStatusBarStyle:statusBarStyle_ animated:YES];
   [super viewWillDisappear:animated];
 }
 
 - (void)viewDidDisappear:(BOOL)animated {
    [self cancelChromeDisplayTimer];
+    [super viewDidDisappear:animated];  // DB: Added. Required per Apple docs.
 }
 
 - (void)updateToolbarWithOrientation:(UIInterfaceOrientation)interfaceOrientation {
@@ -367,6 +375,9 @@ const CGFloat ktkDefaultToolbarHeight = 44;
    
    if ( ! isChromeHidden_ ) {
       [self startChromeDisplayTimer];
+      [self.navigationController.view performSelector:@selector(setNeedsLayout)
+                                           withObject:nil
+                                           afterDelay:0.0f];  // DB: Prevents the navigation bar from getting tucked up under the status bar.
    }
 }
 

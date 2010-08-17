@@ -48,6 +48,11 @@
    
    imageView_ = newView;
    [imageView_ retain];
+    
+      // DB: Added this to detect taps to hide/restore chrome.
+   UITapGestureRecognizer *gestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(viewWasTapped:)];
+   [self.view addGestureRecognizer:gestureRecognizer];
+   [gestureRecognizer release];
    
    [newView release];
 }
@@ -65,10 +70,17 @@
    }
 }
 
-- (void)touchesEnded:(NSSet *)touches withEvent:(UIEvent *)event {
+- (void)viewWasTapped:(UITapGestureRecognizer *)gestureRecognizer {
    if (scroller_) {
       [scroller_ toggleChromeDisplay];
-   }
+   }   
 }
+
+   // DB: Now using a UITapGestureRecognizer.
+//- (void)touchesEnded:(NSSet *)touches withEvent:(UIEvent *)event {
+//   if (scroller_) {
+//      [scroller_ toggleChromeDisplay];
+//   }
+//}
 
 @end

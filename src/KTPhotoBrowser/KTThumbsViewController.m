@@ -35,7 +35,8 @@
    [scrollView setScrollsToTop:YES];
    [scrollView setScrollEnabled:YES];
    [scrollView setBackgroundColor:[UIColor whiteColor]];
-   
+   [scrollView setAlwaysBounceVertical:YES];  // DB: Added.
+
    // Set main view to the scroll view.
    [self setView:scrollView];
    

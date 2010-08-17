@@ -80,7 +80,7 @@
    
    [self removeAllSubviews];
    
-   BOOL thumbsHaveBorder = YES;
+    BOOL thumbsHaveBorder = YES;
    if ([dataSource_ respondsToSelector:@selector(thumbsHaveBorder)]) {
       thumbsHaveBorder = [dataSource_ thumbsHaveBorder];
    }

@@ -9,8 +9,8 @@
 #import <UIKit/UIKit.h>
 
 
-@interface KTPhotoView : UIView {
-
+@interface KTPhotoView : UIScrollView <UIScrollViewDelegate> {
+    UIImageView *photoImageView_;
 }
 
 - (void)setImage:(UIImage *)newImage;

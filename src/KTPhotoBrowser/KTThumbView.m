@@ -32,7 +32,7 @@
       }
       
       [self setClipsToBounds:YES];
-
+      [[self imageView] setContentMode:UIViewContentModeScaleAspectFill];  // DB: Added so the image's aspect ratio doesn't change.
    }
    return self;
 }
